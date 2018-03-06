@@ -15,11 +15,25 @@ public class Application extends Controller {
 				.fetch(10);
 		render(frontPost, olderPosts);
 	}
-	
+
 	@Before
 	static void addDefaults() {
-	    renderArgs.put("blogTitle", Play.configuration.getProperty("blog.title"));
-	    renderArgs.put("blogBaseline", Play.configuration.getProperty("blog.baseline"));
+		renderArgs.put("blogTitle",
+				Play.configuration.getProperty("blog.title"));
+		renderArgs.put("blogBaseline",
+				Play.configuration.getProperty("blog.baseline"));
 	}
+
+	public static void show(Long id) {
+		Post post = Post.findById(id);
+		render(post);
+	}
+	
+	public static void postComment(Long postId, String author, String content) {
+	    Post post = Post.findById(postId);
+	    post.addComment(author, content);
+	    show(postId);
+	}
+	
 
 }
